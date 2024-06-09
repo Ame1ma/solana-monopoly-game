@@ -33,6 +33,11 @@ pub fn Connect() -> Element {
 }
 
 fn init_global_client(endpoint: &str) {
+    let endpoint = if endpoint.is_empty() {
+        "https://api.devnet.solana.com"
+    } else {
+        endpoint
+    };
     SolanaClient::new(endpoint).pipe(Some).pipe(|client| {
         *CLIENT.write() = client;
     });
