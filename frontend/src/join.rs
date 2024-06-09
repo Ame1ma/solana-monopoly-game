@@ -29,10 +29,7 @@ pub fn Join() -> Element {
                             *ERROR.write() = Some(err.to_string());
                             return;
                         }
-                        navigator()
-                            .push(Route::Game {
-                                game_pubkey,
-                            });
+                        navigator().push(Route::Game { game_pubkey });
                     });
                 },
                 "加入"

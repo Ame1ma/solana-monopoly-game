@@ -46,12 +46,17 @@ pub fn BeforeMoving(game: Game, self_player: WhichPlayer) -> Element {
         plain_from_either: _,
     } = game.dice_status
     {
-        if hash_from_each[self_player as usize].is_none() {
+        if !hash_from_each.iter().all(Option::is_some) && dice_plain_signal.read().is_some() {
+            *random_signal.write() = None;
+            *salt_signal.write() = None;
+            *dice_plain_signal.write() = None;
+        }
+        if random_signal.read().is_none() {
             let random = rand::random::<u16>();
             let salt = rand::random::<[u8; 32]>();
             *random_signal.write() = Some(random);
             *salt_signal.write() = Some(salt);
-        } else if hash_from_each.iter().all(Option::is_some) {
+        } else if hash_from_each.iter().all(Option::is_some) && dice_plain_signal.read().is_none() {
             let random_num = *random_signal.read();
             let salt = *salt_signal.read();
             if let Some((random_num, salt)) = random_num.zip(salt) {
@@ -78,6 +83,10 @@ pub fn BeforeMoving(game: Game, self_player: WhichPlayer) -> Element {
             }
         };
     };
+
+    *random_signal.write() = None;
+    *salt_signal.write() = None;
+    *dice_plain_signal.write() = None;
 
     if self_player != game.current_player {
         return rsx! {
