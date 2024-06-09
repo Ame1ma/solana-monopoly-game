@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "program"
+    "programs/*"
 ]
 exclude = [
     "frontend"

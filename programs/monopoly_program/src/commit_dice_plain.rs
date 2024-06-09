@@ -47,6 +47,7 @@ pub fn commit_dice_plain(ctx: Context<Play>, random_num: u16, salt: [u8; 32]) ->
         }) if *from != call_from => {
             let dice_num = ((random_num + *random_num_commited_before) % 6 + 1) as u8;
             ctx.accounts.game.dice_status = DiceStatus::Rolled(dice_num);
+            ctx.accounts.game.player_status = PlayerStatus::AfterMoving;
 
             let current_player_index = ctx.accounts.game.current_player.as_index();
             let old_position = ctx.accounts.game.players[current_player_index].position;

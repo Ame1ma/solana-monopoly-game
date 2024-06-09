@@ -47,11 +47,12 @@ pub fn BeforeMoving(game: Game, self_player: WhichPlayer) -> Element {
     } = game.dice_status
     {
         if !hash_from_each.iter().all(Option::is_some) && dice_plain_signal.read().is_some() {
-            *random_signal.write() = None;
-            *salt_signal.write() = None;
             *dice_plain_signal.write() = None;
-        }
-        if random_signal.read().is_none() {
+            let random = rand::random::<u16>();
+            let salt = rand::random::<[u8; 32]>();
+            *random_signal.write() = Some(random);
+            *salt_signal.write() = Some(salt);
+        } else if random_signal.read().is_none() {
             let random = rand::random::<u16>();
             let salt = rand::random::<[u8; 32]>();
             *random_signal.write() = Some(random);
