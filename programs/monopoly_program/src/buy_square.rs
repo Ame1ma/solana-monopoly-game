@@ -22,5 +22,9 @@ pub fn buy_square(ctx: Context<Play>) -> Result<()> {
         .ok_or(GameError::BalanceNotEnough)?;
 
     ctx.accounts.game.players[current_player.as_index()].balance = new_balance;
+    ctx.accounts.game.board_status[player_position as usize] = SquareStatus::Owned {
+        by: current_player,
+        level: 0,
+    };
     Ok(())
 }

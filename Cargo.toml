@@ -5,6 +5,7 @@ members = [
 exclude = [
     "frontend"
 ]
+resolver = "2"
 
 [profile.release]
 overflow-checks = true
