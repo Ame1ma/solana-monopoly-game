@@ -31,12 +31,12 @@ fn BeforeGameCreate() -> Element {
                 "请输入朋友公钥"
             }
             input {
-                class: "my-3 items-center justify-center w-9/12 px-8 py-3 text-lg font-bold text-gray-900 transition-all duration-200 bg-gray-100 border-2 border-gray-900 sm:w-auto rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900",
+                class: "my-3 items-center justify-center w-9/12 px-8 py-3 text-lg font-bold text-gray-900 transition-all duration-200 bg-gray-100 border-2 border-gray-900 md:w-5/12 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900",
                 value: "{inputed_opponet_pubkey}",
                 oninput: move |event| inputed_opponet_pubkey.set(event.value())
             }
             button {
-                class: "my-3 inline-flex items-center justify-center w-9/12 px-8 py-3 text-lg font-bold text-white transition-all duration-200 bg-gray-900 border-2 border-transparent sm:w-auto rounded-xl hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900",
+                class: "my-3 inline-flex items-center justify-center w-9/12 px-8 py-3 text-lg font-bold text-white transition-all duration-200 bg-gray-900 border-2 border-transparent md:w-5/12 rounded-xl hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900",
                 onclick: move |_| {
                     spawn(async move {
                         let opponet_pubkey = match Pubkey::from_str(&inputed_opponet_pubkey()) {
@@ -94,7 +94,7 @@ fn AfterGameCreate(signature: Signature) -> Element {
                     "{game_pubkey}"
                 }
                 button {
-                    class: "my-3 inline-flex items-center justify-center w-9/12 px-8 py-3 text-lg font-bold text-white transition-all duration-200 bg-gray-900 border-2 border-transparent sm:w-auto rounded-xl hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900",
+                    class: "md:w-5/12 my-3 inline-flex items-center justify-center w-9/12 px-8 py-3 text-lg font-bold text-white transition-all duration-200 bg-gray-900 border-2 border-transparent rounded-xl hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900",
                     onclick: move |_| {
                         navigator()
                             .push(Route::Game {

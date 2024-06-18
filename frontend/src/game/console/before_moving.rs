@@ -58,15 +58,11 @@ pub fn Rolling(
     plain_from_either: Option<DicePlain>,
     is_self_current_player: bool,
 ) -> Element {
-    let mut dice_local_status_signal = use_signal(|| {
-        let random_num = rand::random::<u16>();
-        let salt = rand::random::<[u8; 32]>();
-        let data = DiceLocalData { random_num, salt };
-        DiceLocalState::HashSent(data)
-    });
+    let mut dice_local_status_signal = use_signal(|| DiceLocalState::Init);
     let _tx_sender = use_resource(move || async move {
         let dice_local_status = *dice_local_status_signal.read();
         match dice_local_status {
+            DiceLocalState::Init => (),
             DiceLocalState::HashSent(DiceLocalData { random_num, salt }) => {
                 let hash_from_plain = calculate_hash(
                     &random_num
@@ -93,6 +89,12 @@ pub fn Rolling(
 
     let dice_local_status = *dice_local_status_signal.read();
     match dice_local_status {
+        DiceLocalState::Init => {
+            let random_num = rand::random::<u16>();
+            let salt = rand::random::<[u8; 32]>();
+            let data = DiceLocalData { random_num, salt };
+            *dice_local_status_signal.write() = DiceLocalState::HashSent(data);
+        }
         DiceLocalState::HashSent(data) => {
             if hash_from_each.iter().all(Option::is_some) {
                 *dice_local_status_signal.write() = DiceLocalState::PlainSent(data);
@@ -150,6 +152,7 @@ async fn commit_dice_plain(random_num: u16, salt: [u8; 32]) -> Result<Signature>
 
 #[derive(Clone, Copy)]
 enum DiceLocalState {
+    Init,
     HashSent(DiceLocalData),
     PlainSent(DiceLocalData),
 }
