@@ -37,5 +37,6 @@ pub fn accept_sell_bid(ctx: Context<Play>) -> Result<()> {
         },
     };
     ctx.accounts.game.board_status[position as usize] = new_square_status;
+    ctx.accounts.game.player_status = PlayerStatus::BeforeMoving;
     Ok(())
 }
